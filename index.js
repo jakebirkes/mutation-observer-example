@@ -1,26 +1,29 @@
 require('./starwars.js');
 
-async function renderHomeWorlds(url, name, isJSON, requiresProxy) {
-  isJSON = isJSON || false;
-
+async function fetchHomeWorlds(url, name, requiresProxy) {
   requiresProxy = requiresProxy || false;
   requiresProxy ? url = 'https://cors-anywhere.herokuapp.com/' + url : url = url;
+  const resp = await fetch(url);
+  const json = await resp.json();
+  window[name] = json;
+};
 
-  await fetch(url).then(resp => isJSON ? resp.json() : resp.text()).then(e => {
-    const target = document.querySelectorAll(`.createPerson`);
-    window[name] = e;
-  }).catch(console.error);
-}
-
-const observer = new MutationObserver(function (mutations) { 
-  mutations.forEach(function (mutation) {
+const observer = new MutationObserver (mutations => { 
+  mutations.forEach(mutation => {
     if (mutation.addedNodes.length) {
       console.log('Added', mutation.addedNodes[0]);
       if (mutation.addedNodes[0].class === 'homeWorld') {
         const el = mutation.addedNodes[0];
         const num = el.parentNode.getAttribute('person') - 1;
-        el.setAttribute('mutation-observer-manip', 'true');
-        el.textContent = el.textContent + planetInfo.results[num].name + ' (POP. ' + planetInfo.results[num].population +')';
+
+        const updateHomeWorld = setInterval(function() {
+          if (!planetInfo) {
+            console.log('waiting');
+          } else {
+            el.textContent = el.textContent + planetInfo.results[num].name + ' (POP. ' + planetInfo.results[num].population +')';
+            clearInterval(updateHomeWorld);
+          }
+        }, 100);
       }
     }
     if (mutation.removedNodes.length) {
@@ -30,11 +33,17 @@ const observer = new MutationObserver(function (mutations) {
 });
 
 const people = document.querySelectorAll('.createPerson');
-
-// Here's where thew new fetch and mo are invoked, toggle to compare results
-renderHomeWorlds('http://swapi.dev/api/planets/', 'planetInfo', true, true);
-people.forEach(person => {
-  observer.observe(person, {
-    childList: true
+if (people) {
+  // Here's where thew new fetch and mo are invoked, toggle to compare results
+  fetchHomeWorlds('http://swapi.dev/api/planets/', 'planetInfo', true);
+  people.forEach(person => {
+    observer.observe(person, {
+      childList: true
+    });
   });
-});
+
+  setTimeout(function disconnect() {
+    console.log('disconnecting mutation observer');
+    observer.disconnect();
+  }, 5000);
+}

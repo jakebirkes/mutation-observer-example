@@ -17,9 +17,7 @@ const observer = new MutationObserver (mutations => {
         const num = el.parentNode.getAttribute('person') - 1;
 
         const updateHomeWorld = setInterval(function() {
-          if (typeof planetInfo == "undefined") {
-            console.log('waiting');
-          } else {
+          if (typeof planetInfo !== "undefined") {
             el.textContent = el.textContent + planetInfo.results[num].name + ' (POP. ' + planetInfo.results[num].population +')';
             clearInterval(updateHomeWorld);
           }

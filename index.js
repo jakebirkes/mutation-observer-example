@@ -19,6 +19,7 @@ const observer = new MutationObserver (mutations => {
         const updateHomeWorld = setInterval(function() {
           if (typeof planetInfo !== "undefined") {
             el.textContent = el.textContent + planetInfo.results[num].name + ' (POP. ' + planetInfo.results[num].population +')';
+            console.log('Updated ' + el.textContent);
             clearInterval(updateHomeWorld);
           }
         }, 100);

@@ -17,7 +17,7 @@ const observer = new MutationObserver (mutations => {
         const num = el.parentNode.getAttribute('person') - 1;
 
         const updateHomeWorld = setInterval(function() {
-          if (!planetInfo) {
+          if (typeof planetInfo == "undefined") {
             console.log('waiting');
           } else {
             el.textContent = el.textContent + planetInfo.results[num].name + ' (POP. ' + planetInfo.results[num].population +')';
@@ -34,8 +34,8 @@ const observer = new MutationObserver (mutations => {
 
 const people = document.querySelectorAll('.createPerson');
 if (people) {
-  // Here's where thew new fetch and mo are invoked, toggle to compare results
   fetchHomeWorlds('http://swapi.dev/api/planets/', 'planetInfo', true);
+
   people.forEach(person => {
     observer.observe(person, {
       childList: true

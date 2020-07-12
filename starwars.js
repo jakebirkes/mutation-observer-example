@@ -34,4 +34,4 @@ async function renderPeople(url, requiresProxy) {
   });
 }
 
-renderPeople('https://swapi.dev/api/people/', true);
+renderPeople('https://swapi.dev/api/people/', false); // only one param is required, switch to true if you need a proxy

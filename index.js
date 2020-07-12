@@ -33,7 +33,7 @@ const observer = new MutationObserver (mutations => {
 
 const people = document.querySelectorAll('.createPerson');
 if (people) {
-  fetchHomeWorlds('http://swapi.dev/api/planets/', 'planetInfo', true);
+  fetchHomeWorlds('http://swapi.dev/api/planets/', 'planetInfo', false); // only two params are required, switch to true if you need a proxy
 
   people.forEach(person => {
     observer.observe(person, {

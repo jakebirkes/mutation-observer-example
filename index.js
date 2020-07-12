@@ -44,5 +44,5 @@ if (people) {
   setTimeout(function disconnect() {
     console.log('disconnecting mutation observer');
     observer.disconnect();
-  }, 5000);
+  }, 10000);
 }

@@ -11,7 +11,7 @@ async function fetchHomeWorlds(url, name, requiresProxy) {
 const observer = new MutationObserver (mutations => { 
   mutations.forEach(mutation => {
     if (mutation.addedNodes.length) {
-      console.log('Added', mutation.addedNodes[0]);
+      console.log('Added  ', mutation.addedNodes[0]);
       if (mutation.addedNodes[0].class === 'homeWorld') {
         const el = mutation.addedNodes[0];
         const num = el.parentNode.getAttribute('person') - 1;
@@ -19,7 +19,7 @@ const observer = new MutationObserver (mutations => {
         const updateHomeWorld = setInterval(function() {
           if (typeof planetInfo !== "undefined") {
             el.textContent = el.textContent + planetInfo.results[num].name + ' (POP. ' + planetInfo.results[num].population +')';
-            console.log('Updated ' + el.textContent);
+            console.log('Updated', el);
             clearInterval(updateHomeWorld);
           }
         }, 100);
